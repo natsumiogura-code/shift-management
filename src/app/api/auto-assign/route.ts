@@ -14,14 +14,14 @@ export async function POST(req: NextRequest) {
 
   // 必要人数を取得
   const reqResult = await db.execute("SELECT shift_type_id, required_count FROM shift_requirements");
-  const requirements = reqResult.rows as { shift_type_id: number; required_count: number }[];
+  const requirements = reqResult.rows as unknown as { shift_type_id: number; required_count: number }[];
 
   // 全リクエストを取得
   const requestResult = await db.execute({
     sql: "SELECT staff_id, date, shift_type_id, priority FROM shift_requests WHERE date LIKE ? ORDER BY priority ASC",
     args: [monthPrefix + "%"],
   });
-  const requests = requestResult.rows as {
+  const requests = requestResult.rows as unknown as {
     staff_id: number;
     date: string;
     shift_type_id: number;
